@@ -3,7 +3,16 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Cocos Creator | pza</title>
+  <title>植物大战僵尸 | Plants vs. Zombies</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WLCHESLLH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6WLCHESLLH');
+  </script>
 
   <!--http://www.html5rocks.com/en/mobile/mobifying/-->
   <meta name="viewport"
@@ -34,11 +43,42 @@
   <!--<meta name="browsermode" content="application">-->
   <meta name="x5-page-mode" content="app">
 
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="在线玩植物大战僵尸游戏，享受经典的塔防策略游戏体验！">
+  <meta name="keywords" content="植物大战僵尸,Plants vs. Zombies,在线游戏,塔防游戏">
+
   <!--<link rel="apple-touch-icon" href=".png" />-->
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
   <link rel="stylesheet" type="text/css" href="style-mobile.25fc5.css"/>
   <link rel="icon" href="favicon.8de18.ico"/>
+  
+  <style>
+    #splash {
+      background-color: #000 !important;
+    }
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25) inset;
+    }
+    .progress-bar span {
+      background: linear-gradient(45deg, #4CAF50, #8BC34A);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    }
+    #GameCanvas {
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    #loading-text {
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+  </style>
 </head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
@@ -46,28 +86,29 @@
     <div class="progress-bar stripes">
       <span style="width: 0%"></span>
     </div>
+    <div id="loading-text">游戏加载中...</div>
   </div>
 
-<script src="src/settings.2fe86.js" charset="utf-8"></script>
+  <script src="src/settings.2fe86.js" charset="utf-8"></script>
+  <script src="main.3f54c.js" charset="utf-8"></script>
 
-<script src="main.3f54c.js" charset="utf-8"></script>
-
-<script type="text/javascript">
-(function () {
+  <script type="text/javascript">
+  (function () {
     // open web debugger console
     if (typeof VConsole !== 'undefined') {
-        window.vConsole = new VConsole();
+      window.vConsole = new VConsole();
     }
 
     var debug = window._CCSettings.debug;
     var splash = document.getElementById('splash');
+    var loadingText = document.getElementById('loading-text');
     splash.style.display = 'block';
 
     function loadScript (moduleName, cb) {
       function scriptLoaded () {
-          document.body.removeChild(domScript);
-          domScript.removeEventListener('load', scriptLoaded, false);
-          cb && cb();
+        document.body.removeChild(domScript);
+        domScript.removeEventListener('load', scriptLoaded, false);
+        cb && cb();
       };
       var domScript = document.createElement('script');
       domScript.async = true;
@@ -75,6 +116,13 @@
       domScript.addEventListener('load', scriptLoaded, false);
       document.body.appendChild(domScript);
     }
+
+    // 更新加载进度文本
+    window.updateLoadingText = function(progress) {
+      if (loadingText) {
+        loadingText.textContent = '游戏加载中... ' + Math.floor(progress) + '%';
+      }
+    };
 
     loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.44a62.js', function () {
       if (CC_PHYSICS_BUILTIN || CC_PHYSICS_CANNON) {
@@ -84,7 +132,7 @@
         window.boot();
       }
     });
-})();
-</script>
+  })();
+  </script>
 </body>
 </html>
